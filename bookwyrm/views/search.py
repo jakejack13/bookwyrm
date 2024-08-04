@@ -68,6 +68,8 @@ def book_search(request):
     query = request.GET.get("q")
     # check if query is isbn
     query = isbn_check_and_format(query)
+    if query:
+        query = query.strip()
     min_confidence = request.GET.get("min_confidence", 0)
     search_remote = request.GET.get("remote", False) and request.user.is_authenticated
 
@@ -162,7 +164,7 @@ def user_search(request):
 
 def list_search(request):
     """any relevent lists?"""
-    query = request.GET.get("q")
+    query = request.GET.get("q").strip()
     data = {"query": query, "type": "list"}
     results = (
         models.List.privacy_filter(
